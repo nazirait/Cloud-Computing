@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Image Watermarking Service
+
+Resources:
+  WatermarkApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: custom-stage
+      BinaryMediaTypes:
+        - '*~1*'
+
+  HealthCheckFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: HealthCheckFunction
+      Tracing: Active
+      Handler: src/handlers/healthHandler.handler
+      Runtime: nodejs18.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+            RestApiId:
+              Ref: WatermarkApi
+
+  ShowFormFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: ShowFormFunction
+      Tracing: Active
+      Handler: src/handlers/formHandler.handler
+      Runtime: nodejs18.x
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /form
+            Method: GET
+            RestApiId:
+              Ref: WatermarkApi
+
+  WatermarkFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: WatermarkFunction
+      Tracing: Active
+      Handler: src/handlers/watermarkHandler.handler
+      Runtime: python3.10
+      Timeout: 60
+      MemorySize: 3008
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /watermark
+            Method: post
+            RestApiId:
+              Ref: WatermarkApi
+              
