@@ -1,6 +1,6 @@
 # Cloud Computing: AWS Watermark project
 
-This project is a serverless website for ***automatic image watermarking*** built entirely on ****AWS cloud services***. Users can upload images, apply custom watermarks, and download the processed images instantly. 
+This project is a serverless website for ***automatic image watermarking*** built entirely on ***AWS cloud services***. Users can upload images, apply custom watermarks, and download the processed images instantly. 
 
 ### Architecture - This system uses a serverless architecture with multiple AWS services:
 
